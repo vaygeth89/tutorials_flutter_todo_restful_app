@@ -21,7 +21,6 @@ class TodoListWidget extends StatelessWidget {
             leading: Checkbox(
                 value: todo.isCompleted,
                 onChanged: (isChecked) {
-                  //Todo mark todo as completed
                   todo.isCompleted = isChecked;
                   this.onCheckBoxTap(todo);
                 }),
@@ -30,7 +29,6 @@ class TodoListWidget extends StatelessWidget {
             trailing: IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
-                  //Todo
                   onDeleteButtonTap(todo.id);
                 }),
           );

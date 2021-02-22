@@ -14,8 +14,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Todo> todos = [];
+
+  //! Change the url to suits your network URL
   TodoAPIService todoAPIService =
-      TodoAPIService("https://192.168.1.4:5001/todo");
+      TodoAPIService("https://192.168.1.4:5001/todo/");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +33,10 @@ class _HomePageState extends State<HomePage> {
                       return TodoListWidget(
                         todos: todos,
                         onCheckBoxTap: (Todo todo) async {
-                          await todoAPIService.updateTodo(todo);
-                          refreshPage();
+                          await updateTodo(todo);
                         },
                         onDeleteButtonTap: (int todoId) async {
-                          await todoAPIService.deleteTodo(todoId);
-                          refreshPage();
+                          await deleteTodo(todoId);
                         },
                       );
                     }
@@ -52,13 +52,29 @@ class _HomePageState extends State<HomePage> {
                 refreshPage();
               })),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //Todo
+        onPressed: () async {
+          await addTodo();
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  Future addTodo() async {
+     Todo newTodo = Todo(name: "Todo", isCompleted: false,id:2 );
+    await todoAPIService.addTodo(newTodo);
+    refreshPage();
+  }
+
+  Future deleteTodo(int todoId) async {
+    await todoAPIService.deleteTodo(todoId);
+    refreshPage();
+  }
+
+  Future updateTodo(Todo todo) async {
+    await todoAPIService.updateTodo(todo);
+    refreshPage();
   }
 
   void refreshPage() async {
